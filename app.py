@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_socketio import SocketIO, join_room, leave_room
 
 app = Flask(__name__)
@@ -14,9 +14,13 @@ def home():
 def chat():
     username = request.args.get('username')
     room = request.args.get('room')
+    
 
     if username and room:
-        return render_template('chat.html', username=username, room=room)
+        if room.isdigit(): 
+            return render_template('chat.html', username=username, room=room)
+        else:
+            return redirect(url_for('home'))
     else:
         return redirect(url_for('home'))
 
